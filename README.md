@@ -83,3 +83,15 @@ ERROR: Could not build wheels for fairseq, which is required to install pyprojec
 
 Maybe fairseq needs Microsoft C++ Build Tools.
 [Download installer](https://visualstudio.microsoft.com/ja/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16) and install it.
+
+```
+(1) In PyTorch 2.6, we changed the default value of the `weights_only` argument in `torch.load` from `False` to `True`. Re-running `torch.load` with `weights_only` set to `False` will likely succeed, but it can result in arbitrary code execution. Do it only if you got the file from a trusted source.
+(2) Alternatively, to load with `weights_only=True` please check the recommended steps in the following error message.
+WeightsUnpickler error: Unsupported global: GLOBAL fairseq.data.dictionary.Dictionary was not an allowed global by default. Please use `torch.serialization.add_safe_globals([fairseq.data.dictionary.Dictionary])` or the `torch.serialization.safe_globals([fairseq.data.dictionary.Dictionary])` context manager to allowlist this global if you trust this class/function.
+```
+
+Maybe you need to fix `venv\Lib\site-packages\fairseq\checkpoint_utils.py` line 315 to read weights.
+
+```
+state = torch.load(f, map_location=torch.device("cpu"), weights_only=False)
+```
