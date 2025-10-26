@@ -25,7 +25,7 @@ class TtsRequest(BaseModel):
     f0_up_key: int
     f0_method: str
     index_rate: int
-    protect: int
+    protect: float
 
 
 @api.get("/")
@@ -42,7 +42,7 @@ async def tts(request: TtsRequest):
         request.tts_text,
         request.tts_voice,
         request.f0_up_key,
-        request. f0_method,
+        request.f0_method,
         request.index_rate,
         request.protect
     )
