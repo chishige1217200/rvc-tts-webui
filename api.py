@@ -25,7 +25,7 @@ class TtsRequest(BaseModel):
     f0_up_key: int
     f0_method: str
     index_rate: int
-    protect: int
+    protect: float
 
 
 @api.get("/")
@@ -42,7 +42,7 @@ async def tts(request: TtsRequest):
         request.tts_text,
         request.tts_voice,
         request.f0_up_key,
-        request. f0_method,
+        request.f0_method,
         request.index_rate,
         request.protect
     )
@@ -65,4 +65,5 @@ async def tts(request: TtsRequest):
         raise HTTPException(status_code=500, detail="音声生成に失敗しました。")
 
 if __name__ == "__main__":
+    # uvicornコマンドで起動できないため、ここで環境変数を設定する
     uvicorn.run(api, host="127.0.0.1", port=8001, log_level="debug")
